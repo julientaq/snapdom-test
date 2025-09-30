@@ -1,0 +1,15 @@
+@font-face {
+  font-family: "Truculenta";
+  src: url("../../fonts/Truculenta-VariableFont_opsz\,wdth\,wght.ttf");
+  font-weight: 100 900;
+  font-style: normal italic;
+}
+
+/* @import url("https://fonts.googleapis.com/css2?family=Tiny5&family=Truculenta:opsz,wght@12..72,100..900&display=swap"); */
+
+@font-face {
+  font-family: inter;
+  src: url("../fonts/inter.ttf");
+  font-weight: 100 900;
+  font-style: normal italic;
+}

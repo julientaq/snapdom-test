@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>whay</title>
+    <link rel="stylesheet" href="./css/main.css" />
+    <link rel="stylesheet" href="./fonts2.css" />
+    <!-- <link href="css/fonts.css" rel="stylesheet" /> -->
+    <!-- <link href="css/main.css" rel="stylesheet" /> -->
+  </head>
+  <body>
+    <div class="toolbar">
+      <button id="toolreset">find tools</button>
+      <button id="capture">export</button>
+    </div>
+
+    <article class="editor">
+      <div class="balloon" contenteditable>Why is this not showing up?</div>
+    </article>
+
+    <div class="tools">
+      <h2>palettes</h2>
+      <div class="tool-list">
+        <div class="inputrow" id="row-background-color">
+          <label for="color-back">Couleur de fond</label>
+          <input
+            id="color-back"
+            type="color"
+            data-css-var="--color-background"
+            data-css="background"
+            value="#1aa4cf"
+          />
+        </div>
+        <div class="inputrow" id="row-border-color">
+          <label for="color-border">Couleur de bordure</label>
+          <input
+            id="color-border"
+            type="color"
+            data-css-var="--border-color"
+            data-css="border-color"
+            value="#000000"
+          />
+        </div>
+
+        <div class="inputrow" id="row-border-style">
+          <label for="border-style">Type de bordure</label>
+          <select
+            id="border-style"
+            data-css="border-style"
+            data-css-var="--border-style"
+          >
+            <option value="dotted">dotted</option>
+            <option value="dashed">dashed</option>
+            <option value="solid">solid</option>
+            <option value="double">double</option>
+            <option value="groove">groove</option>
+            <option value="ridge">ridge</option>
+          </select>
+        </div>
+        <div class="inputrow" id="row-border-size">
+          <label for="border-weight">Épaisseur de bordure</label>
+          <input
+            id="border-weight"
+            type="number"
+            data-css-var="--border-width"
+            data-css="border-width"
+            value="2"
+          />
+        </div>
+        <div class="inputrow" id="row-text-color">
+          <label for="color-text">Couleur du texte</label>
+          <input
+            id="color-text"
+            type="color"
+            data-css-var="--color-text"
+            data-css="color"
+            value="#000000"
+          />
+        </div>
+
+        <div class="inputrow" id="row-font-size">
+          <label for="font-size">taille du texte</label>
+          <input
+            id="font-size"
+            type="number"
+            data-css-var="--font-size"
+            data-css="font-size"
+            value="20"
+          />
+        </div>
+        <div class="inputrow" id="row-font-size">
+          <button id="tailleauto">Taille auto</button>
+        </div>
+      </div>
+    </div>
+    <!-- <script src="js/snapdom.min.js"></script> -->
+    <script src="js/snapdom1-9-12-dev3.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
