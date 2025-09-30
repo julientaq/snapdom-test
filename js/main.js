@@ -56,7 +56,7 @@ document.getElementById("capture").addEventListener("click", async function () {
     scale: 2,
   });
 
-  document.body.appendChild(img);
+  document.querySelector(".editor").appendChild(img);
 
   // await result.download({
   //   embedFonts: true,

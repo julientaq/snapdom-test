@@ -1,5 +1,9 @@
+.editor {
+  flex-direction: column;
+}
+
 .tools {
-  font-family: inter;
+  font-family: "inter";
   position: fixed;
   left: 5vw;
   top: 5vh;
@@ -53,7 +57,7 @@
 }
 
 img {
-  position: fixed;
-  top: 3mm;
-  right: 3mm;
+  /* position: fixed; */
+  /* top: 3mm; */
+  /* right: 3mm; */
 }
