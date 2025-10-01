@@ -18,7 +18,12 @@
 }
 
 .balloon {
-  font-family: "Truculenta";
+  /* font-family: "Truculenta"; */
+  /* font-family: "cooper black"; */
+  font-family: "Mansalva";
+  font-style: italic;
+  text-wrap: balance;
+  /* font-family: "Unbounded"; */
   display: flex;
   flex-direction: column;
   align-items: center;

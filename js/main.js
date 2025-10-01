@@ -16,7 +16,7 @@ addEventListener("load", async (event) => {
 async function createStyle(l) {
   // Function to get or create the :root CSSRule
   const stylesheet = new CSSStyleSheet();
-  stylesheet.replaceSync(`.balloon {font-family: "Truculenta"}`);
+  stylesheet.replaceSync(`.balloon {}`);
   stylesheet.id = "replacetest";
   let style = document.createElement("style");
   style.id = "updatedstyle";
@@ -46,14 +46,13 @@ document
   });
 
 document.getElementById("capture").addEventListener("click", async function () {
+  console.log("o");
   const element = document.querySelector(".balloon");
 
   const result = await snapdom(element);
 
   const img = await result.toImg({
-    fast: false,
     embedFonts: true,
-    scale: 2,
   });
 
   document.querySelector(".editor").appendChild(img);
