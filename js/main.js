@@ -26,9 +26,11 @@ async function createStyle(l) {
 
 // Function to update CSS variable
 function updateCSSVariable(varName, value) {
-  document.adoptedStyleSheets
-    .filter((e) => e.id == "replacetest")[0]
-    .cssRules[0].style.setProperty(varName, value);
+  console.log(document.activeElement);
+  document.activeElement.style.setProperty(varName, value);
+  // document.adoptedStyleSheets
+  //   .filter((e) => e.id == "replacetest")[0]
+  //   .cssRules[0].style.setProperty(varName, value);
 }
 
 // Attach event listeners to inputs/selects with data-css-var attribute
@@ -46,22 +48,26 @@ document
   });
 
 document.getElementById("capture").addEventListener("click", async function () {
-  console.log("o");
   const element = document.querySelector(".balloon");
 
-  const result = await snapdom(element);
+  element.style.resize = "none";
 
-  const img = await result.toImg({
-    embedFonts: true,
-  });
+  // const result = await snapdom(element, { embedFonts: true })/* wtoI */mg();
 
-  document.querySelector(".editor").appendChild(img);
+  const result = await snapdom(element, { embedFonts: true });
+
+  const img = await result.toImg({});
+
+  document.querySelector(".preview").insertAdjacentElement("beforeend", img);
 
   // await result.download({
+  //   scale: 2,
   //   embedFonts: true,
   //   format: "webp",
   //   filename: slugify(element.textContent),
   // });
+
+  element.style.resize = "both";
 });
 
 function slugify(str) {
@@ -79,4 +85,20 @@ document.querySelector("#tailleauto").addEventListener("click", function () {
   let balloon = document.querySelector(".balloon");
   balloon.style.width = "auto";
   balloon.style.height = "auto";
+});
+
+document.querySelector("#button-plus").addEventListener("click", function () {
+  document
+    .querySelector(".balloons")
+    .insertAdjacentHTML(
+      "beforeend",
+      `<div class="balloon" contenteditable="">edit text</div>`,
+    );
+});
+
+document.querySelector(".balloons").addEventListener("click", (e) => {
+  document.querySelector(".selected").classList.remove("selected");
+  if (e.target.classList.contains("balloon")) {
+    e.target.classList.add("selected");
+  }
 });
