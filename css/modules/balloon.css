@@ -9,8 +9,7 @@
 }
 
 .balloon {
-  /* font-variation-settings: "wght" 400; */
-  font-family: "inter";
+  font-family: var(--font-family);
   font-synthesis-weight: none; /* evita faux-bold */
   font-synthesis-style: none; /* evita faux-bold */
   text-wrap: balance;
@@ -19,8 +18,6 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  /* margin: auto; */
-  /* outline: 1px solid red; */
   padding: 16px;
   overflow: hidden;
   height: auto;

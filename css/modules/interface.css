@@ -30,8 +30,11 @@ body {
   overflow-y: scroll-y;
 
   img {
-    width: 98%;
-    height: auto;
+    width: 90% !important;
+
+    height: auto !important;
+    margin: 2em auto 0;
+    display: block;
   }
 }
 .tools {
@@ -119,4 +122,37 @@ img {
 
 .balloon.selected {
   box-shadow: 0 0 0 5px var(--selected-color, #ccc);
+}
+
+:has(.selected) {
+  .clickInfo {
+    display: none;
+  }
+  .inputs-list {
+    display: block;
+  }
+}
+
+.inputs-list {
+  display: none;
+}
+
+.preview {
+  display: none;
+}
+.preview:has(img) {
+  display: block;
+}
+
+.preview button {
+  display: none;
+  margin-bottom: 3em;
+}
+.preview:has(img) button {
+  display: block;
+}
+#downloadAll {
+  font-size: 1em;
+  background: white;
+  cursor: pointer;
 }

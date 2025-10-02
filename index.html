@@ -10,11 +10,16 @@
   <body>
     <div class="tools">
       <h2>palettes</h2>
-      <div class="tool-list">
+
+      <div class="clickInfo tool-list" id="row info">
+        <p>Cliquez sur une bulle.</p>
+      </div>
+      <div class="tool-list inputs-list">
         <div class="inputrow" id="row-background-color">
           <label for="color-back">Couleur de fond</label>
           <input
             id="color-back"
+            name="color-back"
             type="color"
             data-css-var="--color-background"
             data-css="background"
@@ -25,6 +30,7 @@
           <label for="color-border">Couleur de bordure</label>
           <input
             id="color-border"
+            name="color-border"
             type="color"
             data-css-var="--border-color"
             data-css="border-color"
@@ -32,10 +38,24 @@
           />
         </div>
 
+        <div class="inputrow" id="row-font-style">
+          <label for="font-family">Typographie</label>
+          <select
+            id="font-family"
+            name="font-family"
+            data-css="font-family"
+            data-css-var="--font-family"
+          >
+            <option value="inter">Inter</option>
+            <option value="mansalva">Mansalva</option>
+            <option value="truculenta">truculenta</option>
+          </select>
+        </div>
         <div class="inputrow" id="row-border-style">
           <label for="border-style">Type de bordure</label>
           <select
             id="border-style"
+            name="border-style"
             data-css="border-style"
             data-css-var="--border-style"
           >
@@ -51,6 +71,7 @@
           <label for="border-weight">Épaisseur de bordure</label>
           <input
             id="border-weight"
+            name="border-weight"
             type="number"
             data-css-var="--border-width"
             data-css="border-width"
@@ -61,6 +82,7 @@
           <label for="color-text">Couleur du texte</label>
           <input
             id="color-text"
+            name="color-text"
             type="color"
             data-css-var="--color-text"
             data-css="color"
@@ -72,6 +94,7 @@
           <label for="font-size">taille du texte</label>
           <input
             id="font-size"
+            name="font-size"
             type="number"
             data-css-var="--font-size"
             data-css="font-size"
@@ -97,10 +120,13 @@
       <button id="button-plus">+</button>
     </article>
 
-    <div class="preview"></div>
+    <div class="preview">
+      <button id="downloadAll">Télécharger toutes les images</button>
+    </div>
     <!-- <script src="js/snapdom.min.js"></script> -->
+    <!-- //jszip -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="js/snapdomnext.js" type="module"></script>
-    <script></script>
     <script src="js/main.js"></script>
   </body>
 </html>

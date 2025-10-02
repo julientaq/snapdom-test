@@ -1,5 +1,6 @@
 addEventListener("load", async (event) => {
   await createStyle();
+  restoreInputsFromCookies();
   applyAllInput();
 });
 
@@ -36,6 +37,10 @@ document
       if (el.type == "number") {
         value = `${value}px`;
       }
+
+      //input cookie
+      saveInputToCookie(e.target);
+
       updateCSSVariable(cssVar, value);
     });
   });
@@ -48,14 +53,15 @@ document.getElementById("capture").addEventListener("click", async function () {
 
   element.style.resize = "none";
   element.style.boxShadow = "none";
-  // const result = await snapdom(element, { embedFonts: true })/* wtoI */mg();
 
   const result = await snapdom(element, {
     embedFonts: true,
+    scale: 8,
     backgroundColor: "transparent",
   });
 
   const img = await result.toWebp({});
+  img.dataset.title = slugify(element.textContent);
 
   document.querySelector(".preview").insertAdjacentElement("beforeend", img);
 
@@ -125,4 +131,72 @@ function applyAllInput() {
       if (document.querySelector(".selected"))
         updateCSSVariableForAll(cssVar, value);
     });
+}
+
+//donwload
+document
+  .getElementById("downloadAll")
+  .addEventListener("click", async function () {
+    const zip = new JSZip();
+    const folder = zip.folder("images");
+    const images = document.querySelectorAll(".preview img");
+
+    const fetchAndAddImage = async (img, index) => {
+      try {
+        const url = img.src;
+        const response = await fetch(url, { mode: "cors" });
+        const blob = await response.blob();
+        const extension = blob.type.split("/")[1] || "jpg";
+        const filename = `${img.dataset.title}-${index + 1}.${extension}`;
+        folder.file(filename, blob);
+      } catch (err) {
+        console.error("Error downloading image:", img.src, err);
+      }
+    };
+
+    // Download all images in parallel
+    await Promise.all([...images].map(fetchAndAddImage));
+
+    // Generate the zip and trigger download
+    zip.generateAsync({ type: "blob" }).then((content) => {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(content);
+      a.download = "images.zip";
+      a.click();
+    });
+  });
+
+//cookie setup
+//
+function setCookie(name, value, days = 365) {
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
+}
+
+// Utility: Get cookie by name
+function getCookie(name) {
+  const cookies = document.cookie.split("; ");
+  for (let cookie of cookies) {
+    const [key, val] = cookie.split("=");
+    if (decodeURIComponent(key) === name) return decodeURIComponent(val);
+  }
+  return null;
+}
+
+// Restore all inputs
+function restoreInputsFromCookies() {
+  const inputs = document.querySelectorAll("input");
+  inputs.forEach((input) => {
+    const saved = getCookie(input.name);
+    if (saved !== null) {
+      input.value = saved;
+    }
+  });
+}
+
+// Save input value on change
+function saveInputToCookie(input) {
+  input.addEventListener("input", () => {
+    setCookie(input.name, input.value);
+  });
 }

@@ -5,3 +5,18 @@
   font-weight: 100 900;
   font-style: normal;
 }
+
+/*so this works. it’s intereting*/
+@font-face {
+  font-family: mansalva;
+  src: url("../fonts/Mansalva-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: inter;
+  src: url("../fonts/inter.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+}
