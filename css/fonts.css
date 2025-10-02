@@ -1,11 +1,7 @@
 /*so this works. it’s intereting*/
 @font-face {
   font-family: truculenta;
-  src: url("../../fonts/truculenta-variablefont.ttf") format("truetype");
+  src: url("../fonts/truculenta-variablefont.ttf") format("truetype");
   font-weight: 100 900;
   font-style: normal;
-}
-.balloon {
-  font-family: "truculenta";
-  font-synthesis: none;
 }

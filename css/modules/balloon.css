@@ -33,7 +33,3 @@
   color: var(--color-text);
   font-size: var(--font-size);
 }
-
-.balloon.selected {
-  box-shadow: 0 0 0 2px red;
-}

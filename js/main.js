@@ -1,16 +1,6 @@
 addEventListener("load", async (event) => {
   await createStyle();
-
-  document
-    .querySelectorAll("input[data-css-var], select[data-css-var]")
-    .forEach((el) => {
-      const cssVar = el.dataset.cssVar;
-      let value = el.value;
-      if (el.type == "number") {
-        value = `${value}px`;
-      }
-      updateCSSVariable(cssVar, value);
-    });
+  applyAllInput();
 });
 
 async function createStyle(l) {
@@ -25,12 +15,15 @@ async function createStyle(l) {
 }
 
 // Function to update CSS variable
+function updateCSSVariableForAll(varName, value) {
+  document.adoptedStyleSheets
+    .filter((e) => e.id == "replacetest")[0]
+    .cssRules[0].style.setProperty(varName, value);
+  document.querySelector(".balloon").style.textContent = "";
+}
+// Function to update CSS variable
 function updateCSSVariable(varName, value) {
-  console.log(document.activeElement);
-  document.activeElement.style.setProperty(varName, value);
-  // document.adoptedStyleSheets
-  //   .filter((e) => e.id == "replacetest")[0]
-  //   .cssRules[0].style.setProperty(varName, value);
+  document.querySelector(".selected")?.style.setProperty(varName, value);
 }
 
 // Attach event listeners to inputs/selects with data-css-var attribute
@@ -48,15 +41,21 @@ document
   });
 
 document.getElementById("capture").addEventListener("click", async function () {
-  const element = document.querySelector(".balloon");
+  let element = document.querySelector(".selected");
+  if (!element) {
+    element = document.querySelector(".balloon");
+  }
 
   element.style.resize = "none";
-
+  element.style.boxShadow = "none";
   // const result = await snapdom(element, { embedFonts: true })/* wtoI */mg();
 
-  const result = await snapdom(element, { embedFonts: true });
+  const result = await snapdom(element, {
+    embedFonts: true,
+    backgroundColor: "transparent",
+  });
 
-  const img = await result.toImg({});
+  const img = await result.toWebp({});
 
   document.querySelector(".preview").insertAdjacentElement("beforeend", img);
 
@@ -68,6 +67,8 @@ document.getElementById("capture").addEventListener("click", async function () {
   // });
 
   element.style.resize = "both";
+
+  element.style.boxShadow = "0 0 0 5px var(--selected-color, #ccc)";
 });
 
 function slugify(str) {
@@ -82,7 +83,7 @@ function slugify(str) {
 }
 
 document.querySelector("#tailleauto").addEventListener("click", function () {
-  let balloon = document.querySelector(".balloon");
+  let balloon = document.querySelector(".selected");
   balloon.style.width = "auto";
   balloon.style.height = "auto";
 });
@@ -96,9 +97,32 @@ document.querySelector("#button-plus").addEventListener("click", function () {
     );
 });
 
-document.querySelector(".balloons").addEventListener("click", (e) => {
-  document.querySelector(".selected").classList.remove("selected");
-  if (e.target.classList.contains("balloon")) {
+document.querySelector(".editor").addEventListener("click", (e) => {
+  document.querySelector(".selected")?.classList.remove("selected");
+
+  if (e.target?.classList.contains("balloon")) {
     e.target.classList.add("selected");
+  } else {
+    document.querySelector(".selected")?.classList.remove("selected");
   }
 });
+
+document.querySelector("#apply").addEventListener("click", (e) => {
+  updateCSSVariableForAll();
+});
+
+function applyAllInput() {
+  //get all the input, apply to all the data, but backup the input maybe?
+  //we’ll do that later.
+  document
+    .querySelectorAll("input[data-css-var], select[data-css-var]")
+    .forEach((el) => {
+      const cssVar = el.dataset.cssVar;
+      let value = el.value;
+      if (el.type == "number") {
+        value = `${value}px`;
+      }
+      if (document.querySelector(".selected"))
+        updateCSSVariableForAll(cssVar, value);
+    });
+}

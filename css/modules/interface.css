@@ -116,3 +116,7 @@ img {
     color: white;
   }
 }
+
+.balloon.selected {
+  box-shadow: 0 0 0 5px var(--selected-color, #ccc);
+}
