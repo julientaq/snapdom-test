@@ -71,7 +71,7 @@ async function capture(element) {
   });
 
   const img = await result.toWebp({});
-  img.dataset.title = slugify(element.textContent);
+  img.dataset.title = slugify(element.textContent).slice(0, 40);
 
   document.querySelector(".preview").insertAdjacentElement("beforeend", img);
 
