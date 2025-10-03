@@ -30,14 +30,4 @@
   color: var(--color-text);
   font-size: var(--font-size);
   position: relative;
-  &::after {
-    content: "";
-    background: orange;
-    width: 5em;
-    height: 5em;
-    position: absolute;
-    bottom: -5em;
-    display: block;
-    left: 0;
-  }
 }

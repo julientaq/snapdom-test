@@ -66,7 +66,7 @@ async function capture(element) {
 
   const result = await snapdom(element, {
     embedFonts: true,
-    scale: 8,
+    scale: 3,
     backgroundColor: "transparent",
   });
 
