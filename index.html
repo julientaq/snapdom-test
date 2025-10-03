@@ -8,13 +8,21 @@
     <link rel="stylesheet" href="./css/fonts.css" />
   </head>
   <body>
+    <div class="toolbar">
+      <button id="tailleauto">Taille auto</button>
+      <button id="resettool">show tool</button>
+      <button id="apply">apply to all</button>
+      <button id="capture">Générer une image</button>
+      <button id="captureAll">Générer toutes les images</button>
+    </div>
     <div class="tools">
-      <h2>palettes</h2>
+      <h2>phylactères</h2>
 
       <div class="clickInfo tool-list" id="row info">
         <p>Cliquez sur une bulle.</p>
       </div>
       <div class="tool-list inputs-list">
+        <h3>Phylactère</h3>
         <div class="inputrow" id="row-background-color">
           <label for="color-back">Couleur de fond</label>
           <input
@@ -38,19 +46,6 @@
           />
         </div>
 
-        <div class="inputrow" id="row-font-style">
-          <label for="font-family">Typographie</label>
-          <select
-            id="font-family"
-            name="font-family"
-            data-css="font-family"
-            data-css-var="--font-family"
-          >
-            <option value="inter">Inter</option>
-            <option value="mansalva">Mansalva</option>
-            <option value="truculenta">truculenta</option>
-          </select>
-        </div>
         <div class="inputrow" id="row-border-style">
           <label for="border-style">Type de bordure</label>
           <select
@@ -59,9 +54,9 @@
             data-css="border-style"
             data-css-var="--border-style"
           >
+            <option value="solid">solid</option>
             <option value="dotted">dotted</option>
             <option value="dashed">dashed</option>
-            <option value="solid">solid</option>
             <option value="double">double</option>
             <option value="groove">groove</option>
             <option value="ridge">ridge</option>
@@ -75,9 +70,26 @@
             type="number"
             data-css-var="--border-width"
             data-css="border-width"
+            min="0"
             value="2"
           />
         </div>
+        <h3>Texte</h3>
+
+        <div class="inputrow" id="row-font-style">
+          <label for="font-family">Typographie</label>
+          <select
+            id="font-family"
+            name="font-family"
+            data-css="font-family"
+            data-css-var="--font-family"
+          >
+            <option value="inter">Inter</option>
+            <option value="mansalva">Mansalva</option>
+            <option value="truculenta">truculenta</option>
+          </select>
+        </div>
+
         <div class="inputrow" id="row-text-color">
           <label for="color-text">Couleur du texte</label>
           <input
@@ -98,29 +110,23 @@
             type="number"
             data-css-var="--font-size"
             data-css="font-size"
-            value="20"
+            value="16"
+            min="2"
           />
-        </div>
-        <div class="inputrow" id="row-font-size">
-          <button id="tailleauto">Taille auto</button>
-        </div>
-
-        <div class="inputrow" id="row-apply">
-          <button id="apply">apply to all</button>
-        </div>
-        <div class="inputrow" id="row-font-size">
-          <button id="capture">export</button>
         </div>
       </div>
     </div>
     <article class="editor">
       <div class="balloons">
-        <div class="balloon" contenteditable>Why is this not showing up?</div>
+        <div class="balloon selected" contenteditable>
+          Vous pouvez changer le contenu ici :)
+        </div>
       </div>
       <button id="button-plus">+</button>
     </article>
 
     <div class="preview">
+      <h3>Images à télécharger</h3>
       <button id="downloadAll">Télécharger toutes les images</button>
     </div>
     <!-- <script src="js/snapdom.min.js"></script> -->

@@ -4,7 +4,7 @@
   --border-style: solid;
   --border-color: black;
   --border-radius: 16px;
-  --font-size: 20px;
+  --font-size: 60px;
   --font-weight: 600;
 }
 
@@ -29,4 +29,15 @@
   border-radius: var(--border-radius);
   color: var(--color-text);
   font-size: var(--font-size);
+  position: relative;
+  &::after {
+    content: "";
+    background: orange;
+    width: 5em;
+    height: 5em;
+    position: absolute;
+    bottom: -5em;
+    display: block;
+    left: 0;
+  }
 }

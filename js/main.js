@@ -2,6 +2,19 @@ addEventListener("load", async (event) => {
   await createStyle();
   restoreInputsFromCookies();
   applyAllInput();
+  move();
+});
+
+document
+  .getElementById("captureAll")
+  .addEventListener("click", async function () {
+    document.querySelectorAll(".balloon").forEach((el) => {
+      capture(el);
+    });
+  });
+
+document.getElementById("capture").addEventListener("click", async function () {
+  capture(document.querySelector(".selected"));
 });
 
 async function createStyle(l) {
@@ -17,20 +30,39 @@ async function createStyle(l) {
 
 // Function to update CSS variable
 function updateCSSVariableForAll(varName, value) {
-  document.adoptedStyleSheets
-    .filter((e) => e.id == "replacetest")[0]
-    .cssRules[0].style.setProperty(varName, value);
-  document.querySelector(".balloon").style.textContent = "";
+  document.querySelectorAll(".balloon").forEach((bal) => {
+    console.log(bal);
+    updateCSSVariable(varName, value, bal);
+  });
 }
 // Function to update CSS variable
-function updateCSSVariable(varName, value) {
-  document.querySelector(".selected")?.style.setProperty(varName, value);
+//
+function updateCSSVariable(varName, value, obj) {
+  console.log(obj);
+  if (obj) obj.style.setProperty(varName, value);
+  else {
+    document.querySelector(".selected")?.style.setProperty(varName, value);
+  }
 }
 
 // Attach event listeners to inputs/selects with data-css-var attribute
 document
   .querySelectorAll("input[data-css-var], select[data-css-var]")
   .forEach((el) => {
+    el.addEventListener("wheel", (event) => {
+      if (el.type != "number") return;
+      if (event.deltaY < 0) {
+        if (el.max && (el.value = parseFloat(el.value) + 1) > el.min) {
+          el.value = parseFloat(el.value) + 1;
+        }
+      }
+      if (event.deltaY > 0) {
+        if ((el.value = parseFloat(el.value) - 1) < el.max) {
+          el.value = parseFloat(el.value) - 1;
+        }
+      }
+    });
+
     el.addEventListener("input", (e) => {
       const cssVar = e.target.dataset.cssVar;
       let value = e.target.value;
@@ -45,10 +77,10 @@ document
     });
   });
 
-document.getElementById("capture").addEventListener("click", async function () {
-  let element = document.querySelector(".selected");
+async function capture(element) {
   if (!element) {
-    element = document.querySelector(".balloon");
+    return;
+    // element = document.querySelector(".balloon");
   }
 
   element.style.resize = "none";
@@ -75,7 +107,7 @@ document.getElementById("capture").addEventListener("click", async function () {
   element.style.resize = "both";
 
   element.style.boxShadow = "0 0 0 5px var(--selected-color, #ccc)";
-});
+}
 
 function slugify(str) {
   return String(str)
@@ -89,27 +121,39 @@ function slugify(str) {
 }
 
 document.querySelector("#tailleauto").addEventListener("click", function () {
+  console.log("yeh");
   let balloon = document.querySelector(".selected");
-  balloon.style.width = "auto";
+  balloon.style.width = "max-content";
   balloon.style.height = "auto";
-});
-
-document.querySelector("#button-plus").addEventListener("click", function () {
-  document
-    .querySelector(".balloons")
-    .insertAdjacentHTML(
-      "beforeend",
-      `<div class="balloon" contenteditable="">edit text</div>`,
-    );
 });
 
 document.querySelector(".editor").addEventListener("click", (e) => {
   document.querySelector(".selected")?.classList.remove("selected");
-
-  if (e.target?.classList.contains("balloon")) {
+  if (e.target.id == "button-plus") {
+    document
+      .querySelector(".balloons")
+      .insertAdjacentHTML(
+        "beforeend",
+        `<div class="balloon selected" contenteditable="">edit text</div>`,
+      );
+    applyAllInput();
+  } else if (e.target?.classList.contains("balloon")) {
     e.target.classList.add("selected");
+    // applystyle to the input
+    document
+      .querySelectorAll("input[data-css-var], select[data-css-var]")
+      .forEach((input) => {
+        if (e.target.style.getPropertyValue(input.dataset.cssVar)) {
+          if (input.type == "number") {
+            input.value = parseFloat(
+              e.target.style.getPropertyValue(input.dataset.cssVar),
+            );
+          } else {
+            input.value = e.target.style.getPropertyValue(input.dataset.cssVar);
+          }
+        }
+      });
   } else {
-    document.querySelector(".selected")?.classList.remove("selected");
   }
 });
 
@@ -168,6 +212,8 @@ document
 
 //cookie setup
 //
+//
+//
 function setCookie(name, value, days = 365) {
   const expires = new Date(Date.now() + days * 864e5).toUTCString();
   document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
@@ -200,3 +246,37 @@ function saveInputToCookie(input) {
     setCookie(input.name, input.value);
   });
 }
+
+function move() {
+  const tools = document.querySelector(".tools");
+  const header = tools.querySelector("h2");
+
+  let isDragging = false;
+  let offsetX = 0;
+  let offsetY = 0;
+
+  header.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    // Calculate offset between mouse position and the top-left corner of the element
+    offsetX = e.clientX - tools.offsetLeft;
+    offsetY = e.clientY - tools.offsetTop;
+    document.body.style.userSelect = "none"; // prevent text selection
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (isDragging) {
+      tools.style.left = `${e.clientX - offsetX}px`;
+      tools.style.top = `${e.clientY - offsetY}px`;
+    }
+  });
+
+  document.addEventListener("mouseup", () => {
+    isDragging = false;
+    document.body.style.userSelect = ""; // re-enable text selection
+  });
+}
+
+document.querySelector("#resettool").addEventListener("click", function () {
+  document.querySelector(".tools").style.left = "100px";
+  document.querySelector(".tools").style.top = "100px";
+});

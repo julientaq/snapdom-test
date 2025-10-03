@@ -1,8 +1,36 @@
+.toolbar {
+  width: 100vw;
+  padding-top: 2em;
+  /* height: 70px; */
+  position: fixed;
+  top: 0;
+  justify-content: start;
+  /* background: grey; */
+  display: flex;
+  z-index: 1000;
+  padding-top: 1em;
+}
+
+:is(.preview, .toolbar) button {
+  background: white;
+  border-radius: 8px;
+  margin: 0 2em;
+  letter-spacing: 0.1ch;
+  padding: 1em;
+  text-transform: uppercase;
+  font-weight: 900;
+  box-shadow: 10px 10px 0px black;
+
+  &:hover {
+    color: white;
+    background: black;
+    cursor: pointer;
+  }
+}
 .editor {
+  margin-top: 10em;
   padding: 3em;
   width: 100%;
-  /* height: 100%; */
-  /* display: flex; */
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
@@ -20,27 +48,29 @@
 
 body {
   display: grid;
-  grid-template-columns: 300px auto 200px;
+  grid-template-columns: auto 400px;
 }
 
 .preview {
-  background: grey;
-  border: 2px solid black;
+  /* background: grey; */
+  border-left: 2px double black;
   height: 100%;
   overflow-y: scroll-y;
 
   img {
     width: 90% !important;
-
     height: auto !important;
-    margin: 2em auto 0;
+    margin: 2em auto;
     display: block;
   }
 }
 .tools {
+  z-index: 999;
+  position: fixed;
+  top: 5em;
+  left: 5em;
+  width: max-content;
   font-family: "inter";
-  width: 100%;
-  height: 100%;
   font-size: 1em;
   overflow: hidden;
   resize: both;
@@ -70,20 +100,30 @@ body {
     margin-bottom: 0.8em;
     display: grid;
     text-align: right;
-    grid-template-columns: 10ch auto;
+    grid-template-columns: 20ch auto;
     gap: 1.5ch;
+  }
+  input,
+  select {
+    width: 100%;
+    justify-self: end;
+    border: 0;
+    border-bottom: 2px solid grey;
   }
   input[type="color"] {
     margin-right: 0em;
-    width: 20px;
-    height: 20px;
-    display: inline-block;
+    /* width: 20px; */
+    /* height: 20px; */
+    /* height: 100%; */
+    /* width: 100%; */
+    /* display: inline-block; */
     padding: 0;
     border: 4px solid transparent;
     display: block;
   }
   input,
   select {
+    display: block;
     max-width: 70%;
     text-align: center;
   }
@@ -120,8 +160,13 @@ img {
   }
 }
 
+.balloon {
+  cursor: pointer;
+}
 .balloon.selected {
-  box-shadow: 0 0 0 5px var(--selected-color, #ccc);
+  position: relative;
+  outline: 2px dotted #32a1ce;
+  outline-offset: 10px;
 }
 
 :has(.selected) {
@@ -144,6 +189,10 @@ img {
   display: block;
 }
 
+.preview h3 {
+  padding-left: 2ch;
+  margin-top: 0;
+}
 .preview button {
   display: none;
   margin-bottom: 3em;
@@ -151,8 +200,37 @@ img {
 .preview:has(img) button {
   display: block;
 }
+
+#capture {
+  display: none;
+}
+:has(.selected) {
+  #capture {
+    display: block;
+  }
+}
+
+input[type="color"] {
+  width: 100%;
+  background: none;
+  border: none;
+}
+
+.tools h2 {
+  cursor: move;
+}
+
+h3 {
+  text-align: left;
+  border-bottom: 2px solid grey;
+  margin-top: 3em;
+}
+
 #downloadAll {
-  font-size: 1em;
-  background: white;
-  cursor: pointer;
+  display: none;
+}
+:has(img) {
+  #downloadAll {
+    display: block;
+  }
 }
