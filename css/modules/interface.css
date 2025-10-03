@@ -76,6 +76,24 @@ body {
   resize: both;
   background: white;
   box-shadow: 0 0 0 2px black inset;
+
+  button {
+    display: inline-block;
+    background: white;
+    border-radius: 8px;
+    margin: 2em 2em;
+    letter-spacing: 0.1ch;
+    padding: 1em;
+    text-transform: uppercase;
+    font-weight: 900;
+
+    &:hover {
+      color: white;
+      background: black;
+      cursor: pointer;
+    }
+  }
+
   h2 {
     background: black;
     color: white;
@@ -223,7 +241,9 @@ input[type="color"] {
 h3 {
   text-align: left;
   border-bottom: 2px solid grey;
-  margin-top: 3em;
+  &:not(:first-child) {
+    margin-top: 3em;
+  }
 }
 
 #downloadAll {

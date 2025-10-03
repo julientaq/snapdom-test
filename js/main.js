@@ -1,5 +1,4 @@
 addEventListener("load", async (event) => {
-  await createStyle();
   restoreInputsFromCookies();
   applyAllInput();
   move();
@@ -17,28 +16,8 @@ document.getElementById("capture").addEventListener("click", async function () {
   capture(document.querySelector(".selected"));
 });
 
-async function createStyle(l) {
-  // Function to get or create the :root CSSRule
-  const stylesheet = new CSSStyleSheet();
-  stylesheet.replaceSync(`.balloon {}`);
-  stylesheet.id = "replacetest";
-  let style = document.createElement("style");
-  style.id = "updatedstyle";
-  document.head.appendChild(style);
-  document.adoptedStyleSheets.push(stylesheet);
-}
-
 // Function to update CSS variable
-function updateCSSVariableForAll(varName, value) {
-  document.querySelectorAll(".balloon").forEach((bal) => {
-    console.log(bal);
-    updateCSSVariable(varName, value, bal);
-  });
-}
-// Function to update CSS variable
-//
 function updateCSSVariable(varName, value, obj) {
-  console.log(obj);
   if (obj) obj.style.setProperty(varName, value);
   else {
     document.querySelector(".selected")?.style.setProperty(varName, value);
@@ -52,12 +31,12 @@ document
     el.addEventListener("wheel", (event) => {
       if (el.type != "number") return;
       if (event.deltaY < 0) {
-        if (el.max && (el.value = parseFloat(el.value) + 1) > el.min) {
+        if (el.min && (el.value = parseFloat(el.value) + 1) > el.min) {
           el.value = parseFloat(el.value) + 1;
         }
       }
       if (event.deltaY > 0) {
-        if ((el.value = parseFloat(el.value) - 1) < el.max) {
+        if (el.max && (el.value = parseFloat(el.value) - 1) < el.max) {
           el.value = parseFloat(el.value) - 1;
         }
       }
@@ -72,7 +51,6 @@ document
 
       //input cookie
       saveInputToCookie(e.target);
-
       updateCSSVariable(cssVar, value);
     });
   });
@@ -121,7 +99,6 @@ function slugify(str) {
 }
 
 document.querySelector("#tailleauto").addEventListener("click", function () {
-  console.log("yeh");
   let balloon = document.querySelector(".selected");
   balloon.style.width = "max-content";
   balloon.style.height = "auto";
@@ -137,45 +114,34 @@ document.querySelector(".editor").addEventListener("click", (e) => {
         `<div class="balloon selected" contenteditable="">edit text</div>`,
       );
     applyAllInput();
-  } else if (e.target?.classList.contains("balloon")) {
-    e.target.classList.add("selected");
+  } else if (
+    e.target?.classList.contains("balloon") ||
+    e.target.closest(".balloon")
+  ) {
+    let selectedballoon = e.target.closest(".balloon")
+      ? e.target.closest(".balloon")
+      : e.target.classList.contains("ballon");
+
+    selectedballoon.classList.add("selected");
     // applystyle to the input
     document
       .querySelectorAll("input[data-css-var], select[data-css-var]")
       .forEach((input) => {
-        if (e.target.style.getPropertyValue(input.dataset.cssVar)) {
+        if (selectedballoon.style.getPropertyValue(input.dataset.cssVar)) {
           if (input.type == "number") {
             input.value = parseFloat(
-              e.target.style.getPropertyValue(input.dataset.cssVar),
+              selectedballoon.style.getPropertyValue(input.dataset.cssVar),
             );
           } else {
-            input.value = e.target.style.getPropertyValue(input.dataset.cssVar);
+            input.value = selectedballoon.style.getPropertyValue(
+              input.dataset.cssVar,
+            );
           }
         }
       });
   } else {
   }
 });
-
-document.querySelector("#apply").addEventListener("click", (e) => {
-  updateCSSVariableForAll();
-});
-
-function applyAllInput() {
-  //get all the input, apply to all the data, but backup the input maybe?
-  //we’ll do that later.
-  document
-    .querySelectorAll("input[data-css-var], select[data-css-var]")
-    .forEach((el) => {
-      const cssVar = el.dataset.cssVar;
-      let value = el.value;
-      if (el.type == "number") {
-        value = `${value}px`;
-      }
-      if (document.querySelector(".selected"))
-        updateCSSVariableForAll(cssVar, value);
-    });
-}
 
 //donwload
 document
@@ -276,7 +242,23 @@ function move() {
   });
 }
 
+//reset the tool location
 document.querySelector("#resettool").addEventListener("click", function () {
   document.querySelector(".tools").style.left = "100px";
   document.querySelector(".tools").style.top = "100px";
 });
+
+function applyAllInput(obj) {
+  document
+    .querySelectorAll("input[data-css-var], select[data-css-var]")
+    .forEach((input) => {
+      const cssVar = input.dataset.cssVar;
+      let value = input.value;
+
+      if (input.type == "number") {
+        value = `${value}px`;
+      }
+      //the number is right here
+      updateCSSVariable(cssVar, value, obj);
+    });
+}
