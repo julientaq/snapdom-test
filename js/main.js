@@ -83,8 +83,6 @@ async function capture(element) {
   // });
 
   element.style.resize = "both";
-
-  element.style.boxShadow = "0 0 0 5px var(--selected-color, #ccc)";
 }
 
 function slugify(str) {
