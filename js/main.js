@@ -262,3 +262,9 @@ function applyAllInput(obj) {
       updateCSSVariable(cssVar, value, obj);
     });
 }
+
+document.querySelector("#apply").addEventListener("click", function () {
+  document.querySelectorAll(".balloon").forEach((balloon) => {
+    applyAllInput(balloon);
+  });
+});
